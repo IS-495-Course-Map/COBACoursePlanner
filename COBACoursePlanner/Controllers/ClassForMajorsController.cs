@@ -20,9 +20,48 @@ namespace COBACoursePlanner.Controllers
         }
 
         // GET: ClassForMajors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string major, string searchString)
         {
-            return View(await _context.ClassForMajor.ToListAsync());
+
+            IQueryable<string> majorDescQuery = from m in _context.Major
+                                            select m.MajorDesc;
+
+            var majorIDList = _context.Major
+                                      .Where(s => s.MajorDesc == major)
+                                      .ToList();
+                                            
+
+            
+
+            string majorID = "";
+
+
+            
+                
+
+
+
+            var classForMajor = from m in _context.ClassForMajor
+                                select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                classForMajor = classForMajor.Where(s => s.ClassID.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(major))
+            {
+                majorID = majorIDList[0].MajorID;
+                classForMajor = classForMajor.Where(x => x.MajorID == majorID);
+            }
+
+            var majorVM = new MajorSelectViewModel
+            {
+                Majors = new SelectList(await majorDescQuery.Distinct().ToListAsync()),
+                ClassForMajors = await classForMajor.ToListAsync()
+            };
+            
+            return View(majorVM);
         }
 
         // GET: ClassForMajors/Details/5

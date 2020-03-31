@@ -1,4 +1,4 @@
-﻿@model IEnumerable<COBACoursePlanner.Models.ClassForMajor>
+﻿@model COBACoursePlanner.Models.MajorSelectViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,20 +9,30 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="" asp-action="Index" method="get">
+    <p>
+        <select asp-for="Major" asp-items="Model.Majors">
+        </select>
+        
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MajorID)
+                @Html.DisplayNameFor(model => model.ClassForMajors[0].MajorID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ClassID)
+                @Html.DisplayNameFor(model => model.ClassForMajors[0].ClassID)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.ClassForMajors) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.MajorID)
