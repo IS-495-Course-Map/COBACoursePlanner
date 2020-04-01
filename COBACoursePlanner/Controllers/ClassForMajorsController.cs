@@ -29,20 +29,16 @@ namespace COBACoursePlanner.Controllers
             var majorIDList = _context.Major
                                       .Where(s => s.MajorDesc == major)
                                       .ToList();
-                                            
-
-            
 
             string majorID = "";
 
-
-            
-                
-
-
-
             var classForMajor = from m in _context.ClassForMajor
                                 select m;
+
+            List<Class> classes = _context.Class.ToList();
+
+            List<Class> classesForMajor = new List<Class>();
+                            
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -53,12 +49,25 @@ namespace COBACoursePlanner.Controllers
             {
                 majorID = majorIDList[0].MajorID;
                 classForMajor = classForMajor.Where(x => x.MajorID == majorID);
+                foreach (ClassForMajor i in classForMajor)
+                {
+                    foreach (Class x in classes)
+                        if (i.ClassID == x.ClassID)
+                        {
+                            classesForMajor.Add(x);
+                        }
+
+                }
+            }
+            else
+            {
+                classForMajor = classForMajor.Where(x => x.MajorID == "null");
             }
 
             var majorVM = new MajorSelectViewModel
             {
                 Majors = new SelectList(await majorDescQuery.Distinct().ToListAsync()),
-                ClassForMajors = await classForMajor.ToListAsync()
+                ClassesForMajors = classesForMajor
             };
             
             return View(majorVM);

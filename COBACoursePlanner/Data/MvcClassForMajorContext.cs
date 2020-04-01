@@ -17,5 +17,7 @@ namespace COBACoursePlanner.Data
         public DbSet<ClassForMajor> ClassForMajor { get; set; }
 
         public DbSet<Major> Major { get; set; }
+
+        public DbSet<Class> Class { get; set; }
     }
 }

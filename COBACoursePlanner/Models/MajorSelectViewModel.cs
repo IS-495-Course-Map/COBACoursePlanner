@@ -8,7 +8,7 @@ namespace COBACoursePlanner.Models
 {
     public class MajorSelectViewModel
     {
-        public List<ClassForMajor> ClassForMajors { get; set; }
+        public List<Class> ClassesForMajors { get; set; }
         public SelectList Majors { get; set; }
         public string Major { get; set; }
         public string SearchString { get; set; }

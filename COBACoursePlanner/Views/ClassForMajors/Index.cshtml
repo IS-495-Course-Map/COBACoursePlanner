@@ -1,51 +1,80 @@
 ﻿@model COBACoursePlanner.Models.MajorSelectViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "UNR College of Business Course Planner";
 }
 
-<h1>Index</h1>
+<h1>UNR College of Business Course Planner</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
 <form asp-controller="" asp-action="Index" method="get">
     <p>
         <select asp-for="Major" asp-items="Model.Majors">
         </select>
-        
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
+        <input type="submit" value="Search" />
     </p>
 </form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ClassForMajors[0].MajorID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClassForMajors[0].ClassID)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.ClassForMajors) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MajorID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MajorClassID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MajorClassID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MajorClassID">Delete</a>
-            </td>
-        </tr>
+@{
+    int classIndex = 0;
+    int classMax =  5;
 }
-    </tbody>
-</table>
+
+@if (Model.ClassesForMajors.Count() > 0)
+
+
+    @for (int year = 1; year <= 4; year++)
+    {
+        <h2>Year @year.ToString()</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Fall Semester
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @while (classIndex < classMax  && classIndex < Model.ClassesForMajors.Count())
+                 {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
+                        </td>
+                    </tr>
+                    classIndex++;
+
+                 }
+                @{ classMax += 5;}
+                
+
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Spring Semester
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @while (classIndex <= classMax && classIndex < Model.ClassesForMajors.Count())
+                 {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
+                        </td>
+                    </tr>
+                    classIndex++;
+                 }
+                @{ classMax += 5;}
+            </tbody>
+        </table>
+    }
