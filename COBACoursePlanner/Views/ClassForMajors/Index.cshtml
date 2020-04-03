@@ -6,6 +6,8 @@
 
 <h1>UNR College of Business Course Planner</h1>
 
+<br />
+
 
 <form asp-controller="" asp-action="Index" method="get">
     <p>
@@ -22,59 +24,62 @@
 @if (Model.ClassesForMajors.Count() > 0)
 
 
-    @for (int year = 1; year <= 4; year++)
+@for (int year = 1; year <= 4; year++)
     {
-        <h2>Year @year.ToString()</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Fall Semester
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+<h2>Year @year.ToString()</h2>
+<br />
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th colspan="2">
+                Fall Semester
+            </th>
+        </tr>
+    </thead>
+    <tbody>
 
-                @while (classIndex < classMax  && classIndex < Model.ClassesForMajors.Count())
+        @while (classIndex < classMax  && classIndex < Model.ClassesForMajors.Count())
                  {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
-                        </td>
-                    </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
+            </td>
+        </tr>
                     classIndex++;
 
                  }
-                @{ classMax += 5;}
-                
+        @{ classMax += 5;}
 
-            </tbody>
-        </table>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Spring Semester
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @while (classIndex <= classMax && classIndex < Model.ClassesForMajors.Count())
+
+    </tbody>
+</table>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th colspan="2">
+                Spring Semester
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @while (classIndex < classMax && classIndex < Model.ClassesForMajors.Count())
                  {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
-                        </td>
-                    </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ClassesForMajors[classIndex].ClassDesc)
+            </td>
+        </tr>
                     classIndex++;
                  }
-                @{ classMax += 5;}
-            </tbody>
-        </table>
+        @{ classMax += 5;}
+    </tbody>
+</table>
+<br />
+
     }
