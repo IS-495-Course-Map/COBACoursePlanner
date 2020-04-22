@@ -11,6 +11,7 @@ namespace COBACoursePlanner.Models
         [Key]
         public string ClassID { get; set; }
         public string ClassDesc { get; set; }
+        public string Prereqs { get; set; }
         public string ReqFilled { get; set; }
         public string SecReqFilled { get; set; }
         public string TertReqFilled { get; set; }

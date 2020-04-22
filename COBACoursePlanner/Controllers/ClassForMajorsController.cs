@@ -23,31 +23,45 @@ namespace COBACoursePlanner.Controllers
         public async Task<IActionResult> Index(string major, string searchString)
         {
 
+            //Query Database Major Descriptions for dropdown list.
+
             IQueryable<string> majorDescQuery = from m in _context.Major
                                             select m.MajorDesc;
 
-            var majorIDList = _context.Major
+            //Get MajorID for Selected Major.
+            var majorIDFromSelection = _context.Major
                                       .Where(s => s.MajorDesc == major)
                                       .ToList();
 
-            string majorID = "";
+            //Declare string as null.
+            string majorID = ""; 
 
+            //Query Database for all classes in ClasssForMajor Table
             var classForMajor = from m in _context.ClassForMajor
                                 select m;
 
+            var prebusList = from m in _context.ClassForMajor
+                             select m;
+
+            //Create List of all classes in Class Table in Database
             List<Class> classes = _context.Class.ToList();
 
+
+
+
             List<Class> classesForMajor = new List<Class>();
+            List < Class > prebusinessList = new List<Class>();
                             
+            //IN CASE OF NEED FOR SEARCH FUNCTION
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    classForMajor = classForMajor.Where(s => s.ClassID.Contains(searchString));
+            //}
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                classForMajor = classForMajor.Where(s => s.ClassID.Contains(searchString));
-            }
-
+            //Create Lists of Classes for Selected Major and General Business Classes
             if (!string.IsNullOrEmpty(major))
             {
-                majorID = majorIDList[0].MajorID;
+                majorID = majorIDFromSelection[0].MajorID;
                 classForMajor = classForMajor.Where(x => x.MajorID == majorID);
                 foreach (ClassForMajor i in classForMajor)
                 {
@@ -58,16 +72,34 @@ namespace COBACoursePlanner.Controllers
                         }
 
                 }
+                if (majorID != "ECONBA2019")
+                {
+                    prebusList = prebusList.Where(x => x.MajorID == "PREBUS2019");
+                    foreach (ClassForMajor i in prebusList)
+                    {
+                        foreach (Class x in classes)
+                            if (i.ClassID == x.ClassID)
+                            {
+                                prebusinessList.Add(x);
+                            }
+
+                    }
+                }
             }
+            
+            //Empty List for Index Page before selection.
             else
             {
                 classForMajor = classForMajor.Where(x => x.MajorID == "null");
             }
 
+            //Populate model.
+
             var majorVM = new MajorSelectViewModel
             {
                 Majors = new SelectList(await majorDescQuery.Distinct().ToListAsync()),
-                ClassesForMajors = classesForMajor
+                ClassesForMajors = classesForMajor,
+                PrebusinessList = prebusinessList
             };
             
             return View(majorVM);
